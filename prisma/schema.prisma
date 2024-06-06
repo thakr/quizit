@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["omitApi"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Quiz {
+  id        String  @id @default(cuid())
+  title     String
+  questions Question[]
+  timeLimit Int? // in seconds
+  description String?
+}
+
+model Question {
+  id      String     @id @default(cuid())
+  quiz    Quiz    @relation(fields: [quizId], references: [id])
+  quizId  String
+  question   String
+  answer String?
+  answerType AnswerType
+  choices String[]
+}
+
+enum AnswerType {
+  LONG_TEXT
+  MULTIPLE_CHOICE
+  SHORT_TEXT_NUMBER
+  SHORT_TEXT
+}

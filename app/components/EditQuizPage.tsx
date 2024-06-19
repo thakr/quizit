@@ -1,24 +1,19 @@
 "use client";
-
 import React, { useState } from "react";
-import QuizCard from "@/app/components/QuizCard";
-//import { Quiz,Question,Status } from '../types';
-import { QuizWithQuestions, Response } from "../types";
-import { AnswerType } from "@prisma/client";
+import { QuizWithQuestionsWithAnswers } from "../types";
 import { Session } from "next-auth";
-export default function QuizPage({
+import EditQuizCard from "./EditQuizCard";
+import { PlusIcon } from "@heroicons/react/24/outline";
+
+export default function EditQuizPage({
   quiz,
-  responses,
-  statuses,
   session,
 }: {
-  quiz: QuizWithQuestions;
-  responses: Response[];
-  statuses: { questionId: string; status: boolean | undefined }[];
+  quiz: QuizWithQuestionsWithAnswers;
   session: Session;
 }) {
   const [scrolled, setScrolled] = useState(false);
-
+  const [newQuestions, setNewQuestions] = useState(0);
   return (
     <div
       className="w-full h-screen bg-gradient-to-b from-black to-zinc-900 overflow-auto no-scrollbar before:opacity-0 transition after:opacity-100"
@@ -43,19 +38,23 @@ export default function QuizPage({
         </p>
       </div>
       <div className="sm:mx-10">
-        {/* flex flex-row flex-wrap items-start justify-start */}
-        <div className="m-5 lg:m-10 gap-10 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 grid">
+        <div className="m-5 lg:m-10 gap-10 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 grid justify-center">
           {quiz.questions.map((question, index: number) => (
-            <QuizCard
-              key={index}
-              question={question}
-              cardResponse={responses.find((r) => r.questionId === question.id)}
-              cardStatus={
-                statuses.find((s) => s.questionId == question.id)?.status
-              }
-              session={session}
+            <EditQuizCard key={index} question={question} quiz={quiz} />
+          ))}
+          {[...Array(newQuestions)].map((_, i) => (
+            <EditQuizCard
+              key={quiz.questions.length + i}
+              quiz={quiz}
+              close={() => setNewQuestions(newQuestions - 1)}
             />
           ))}
+          <div
+            className="p-5 w-full h-full border-[1.5px] border-dashed border-zinc-600 rounded-lg bg-black bg-opacity-10 backdrop-blur-md transition flex items-center justify-center group hover:border-white cursor-pointer"
+            onClick={() => setNewQuestions(newQuestions + 1)}
+          >
+            <PlusIcon className="h-10 w-10 text-zinc-300 group-hover:text-white" />
+          </div>
         </div>
       </div>
     </div>

@@ -1,23 +1,21 @@
-"use client";
+import React from "react";
 
-import { useFormStatus } from "react-dom";
-
-export function SubmitButton({
+export default function PrimaryButton({
   text,
   disabled,
+  onClick,
 }: {
-  text?: string;
+  text: String;
   disabled?: boolean;
+  onClick?: () => void;
 }) {
-  const { pending } = useFormStatus();
-
   return (
     <button
       className=" py-2 px-4 rounded-lg text-center text-black font-bold bg-white hover:bg-zinc-300 transition disabled:bg-zinc-400 disabled:cursor-not-allowed"
-      type="submit"
-      disabled={disabled || pending}
+      disabled={disabled}
+      onClick={onClick}
     >
-      {text ? text : "Submit"}
+      {text}
     </button>
   );
 }

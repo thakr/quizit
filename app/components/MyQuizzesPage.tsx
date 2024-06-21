@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as Dialog from "@radix-ui/react-dialog";
 import MyQuizCard from "./MyQuizCard";
@@ -18,30 +18,32 @@ export default function MyQuizzesPage({
   quizzes: QuizWithQuestionsAndResponses[];
   session: Session;
 }) {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <div
-      className="w-full h-screen bg-gradient-to-b overflow-auto no-scrollbar from-black to-zinc-900 before:opacity-0 transition after:opacity-100"
-      onScroll={(e) =>
-        (e.target as HTMLInputElement).scrollTop /
-          (e.target as HTMLInputElement).clientHeight >
-        0
-          ? setScrolled(true)
-          : setScrolled(false)
-      }
-    >
+    <div className="w-full">
       <div
-        className={`flex flex-col items-center px-10 py-20 sticky transition duration-300 top-0 ${
-          scrolled ? "opacity-20" : "opacity-100"
+        className={`flex flex-col items-center px-10 py-16 transition duration-300 top-0 ${
+          scrollY > 0 ? "opacity-20" : "opacity-100"
         }`}
       >
-        <h1 className="text-6xl text-white font-bold p-2.5 text-center">
-          My Quizzes
-        </h1>
+        <div className="flex justify-center fixed h-36 items-center flex-col text-center">
+          <h1 className="text-6xl text-white font-bold p-2.5">My quizzes</h1>
+        </div>
       </div>
-      <div className="pb-10 px-10 w-full flex items-center justify-center">
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10 w-full md:w-[75%]">
+      <div className="pb-10 mt-36 px-5 md:px-10 w-full flex items-center justify-center">
+        <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-10 w-full lg:w-[75%]">
           {quizzes.map((quiz) => (
             <MyQuizCard key={quiz.id} quiz={quiz} />
           ))}
@@ -59,7 +61,7 @@ export default function MyQuizzesPage({
               action={(formData) =>
                 createQuiz(formData, session).then(async (res) => {
                   if (res && !("error" in res)) {
-                    redirect(`/quiz/${res.id}`);
+                    redirect(`/quiz/${res.id}/edit`);
                   }
                 })
               }

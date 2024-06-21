@@ -102,7 +102,7 @@ export default function QuizCard({
                 Correct
               </p>
             )}
-            {status === false && (
+            {status !== undefined && status === false && (
               <p className="p-2 font-bold text-red-400 text-md transition before:opacity-0 after:opacity-100">
                 Incorrect
               </p>

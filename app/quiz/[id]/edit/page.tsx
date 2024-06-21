@@ -4,7 +4,7 @@ import prisma from "@/app/lib/prisma";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import React from "react";
-
+export const revalidate = 0;
 export default async function page({ params }: { params: { id: string } }) {
   const session = await auth();
   const quiz = await getQuizWithAnswers(params.id);

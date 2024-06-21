@@ -5,6 +5,8 @@ import prisma from "./prisma";
 import { signOut, signIn } from "@/auth";
 import { Question } from "@prisma/client";
 import { AnswerType } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+
 export async function handleForm(
   formData: FormData,
   question: QuestionsWithoutAnswer,
@@ -77,7 +79,30 @@ export async function editCreateQuestion(
     }
   }
 }
-
+export async function deleteQuestion(question: Question, session: Session) {
+  if (!session.user?.id) {
+    return { error: "Invalid user" };
+  } else {
+    const quiz = await prisma.quiz
+      .findUnique({
+        where: { id: question.quizId },
+      })
+      .then(async (quiz) => {
+        if (quiz?.authorId === session.user?.id) {
+          const deletedQuestion = await prisma.question.delete({
+            where: { id: question.id },
+          });
+          return deletedQuestion;
+        } else {
+          return { error: "Invalid quiz" };
+        }
+      })
+      .catch((e) => {
+        return { error: "Invalid user" };
+      });
+    return quiz; // Add this line to return the deleted question or error
+  }
+}
 export async function createQuiz(formData: FormData, session: Session) {
   if (session.user?.id) {
     const title = formData.get("name")?.toString();
@@ -104,7 +129,7 @@ export async function getQuiz(id: string) {
       questions: {
         omit: { answers: true },
         orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
       },
     },
@@ -117,7 +142,7 @@ export async function getQuizWithAnswers(id: string) {
     include: {
       questions: {
         orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
       },
     },
@@ -164,7 +189,7 @@ export async function checkResponseCorrect(response: Response) {
   const question = await prisma.question.findUnique({
     where: { id: response.questionId },
   });
-  if (question?.answers) {
+  if (question?.answers && question?.answers.length > 0) {
     const qLower = question.answers.map((a) => a.toLowerCase());
     if (qLower.includes(response.answer.toLowerCase())) {
       return true;

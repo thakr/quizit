@@ -7,22 +7,33 @@ import { SubmitButton } from "./SubmitButton";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Dropdown from "./Dropdown";
 import DangerButton from "./DangerButton";
-import { editCreateQuestion } from "../lib/actions";
+import { deleteQuestion, editCreateQuestion } from "../lib/actions";
+import Alert from "./Alert";
+import { Session } from "next-auth";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 
 export default function EditQuizCard({
-  question,
+  defaultQuestion,
   quiz,
   close,
+  session,
 }: {
-  question?: Question;
+  defaultQuestion?: Question;
   quiz: Quiz;
-  close?: () => void;
+  close: (question?: Question) => void;
+  session: Session;
+  open?: (question: Question) => void;
 }) {
   const [answerType, setAnswerType] = useState("Short answer");
   const [mcOptions, setMcOptions] = useState<string[]>([]);
   const [responses, setResponses] = useState<string[]>([]);
   const [height, setHeight] = useState(0);
+  const [disabled, setDisabled] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [question, setQuestion] = useState<Question | undefined>(
+    defaultQuestion
+  );
   useEffect(() => {
     if (ref.current) {
       setHeight(ref.current.clientHeight);
@@ -49,9 +60,10 @@ export default function EditQuizCard({
     }
     setResponses(question?.answers || []);
   }, [question]);
+  const router = useRouter();
   return (
     <div
-      className={`border-[1.5px] w-full rounded-lg p-4 flex flex-col z-10 bg-black bg-opacity-10 backdrop-blur-md shadow-lg border-zinc-600 self-start ${
+      className={`border-[1.5px] w-full rounded-lg p-4 flex flex-col bg-black bg-opacity-10 backdrop-blur-md shadow-lg border-zinc-600 self-start ${
         height > 500 && "row-span-2"
       } ${height > 750 && "row-span-3"}`}
       ref={ref}
@@ -74,7 +86,11 @@ export default function EditQuizCard({
           }
           formData.append("correctResponses", JSON.stringify(responses));
           formData.append("quizId", quiz.id.toString());
-          editCreateQuestion(formData, question).then(() => {});
+          editCreateQuestion(formData, question).then((res) => {
+            if (res && !("error" in res)) {
+              setQuestion(res);
+            }
+          });
         }}
       >
         <fieldset className="mb-5">
@@ -229,16 +245,27 @@ export default function EditQuizCard({
             Add correct response
           </div>
         </fieldset>
-        <fieldset className="w-full flex gap-5 py-5 justify-end">
+        <fieldset className="w-full flex gap-4 py-5 justify-end">
           {question ? (
-            <DangerButton text="Delete question" onClick={() => alert("hi")} />
+            <Alert
+              onAction={() => {
+                setDisabled(true);
+                deleteQuestion(question, session).then((res) => {
+                  setDisabled(false);
+                  close(res as Question);
+                });
+              }}
+              trigger={
+                <DangerButton text="Delete question" disabled={disabled} />
+              }
+            />
           ) : (
             <DangerButton text="Delete question" onClick={close} />
           )}
           {question ? (
-            <SubmitButton text="Save changes" />
+            <SubmitButton text="Save changes" disabled={disabled} />
           ) : (
-            <SubmitButton text="Create question" />
+            <SubmitButton text="Create question" disabled={disabled} />
           )}
         </fieldset>
       </form>

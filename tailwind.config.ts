@@ -8,18 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       fontFamily: {
-        sans: ['var(--font-dm-sans)']
+        sans: ["var(--font-dm-sans)"],
       },
     },
   },
-  plugins: [
-    require('@headlessui/tailwindcss')
-  ],
 };
 export default config;

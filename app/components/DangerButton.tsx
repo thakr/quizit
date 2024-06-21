@@ -15,6 +15,7 @@ export default function DangerButton({
       className=" py-2 px-4 rounded-lg text-center text-white font-bold bg-red-900 hover:bg-red-700 transition disabled:bg-zinc-600 disabled:cursor-not-allowed"
       disabled={disabled || pending}
       onClick={onClick}
+      type="button"
     >
       {text}
     </button>

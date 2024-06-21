@@ -27,7 +27,7 @@ export default function NavBar({ session }: { session: Session | null }) {
   }, []);
   return (
     <NavigationMenu.Root
-      className={`flex justify-between z-20 sticky top-0 h-16 border-b-zinc-800 border-b border-opacity-0 bg-black bg-opacity-0${
+      className={`flex justify-between z-20 sticky top-0 h-16 border-b-zinc-800 border-b border-opacity-0 bg-black bg-opacity-0 ${
         scrollY > 0 && "border-opacity-100 bg-opacity-80 backdrop-blur-2xl"
       } items-center px-5 py-3 transition duration-300 `}
     >

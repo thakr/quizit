@@ -1,16 +1,14 @@
 "use client";
 
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { Session } from "next-auth";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
 import { logOut } from "@/app/lib/actions";
-import Dropdown from "../Dropdown";
-import UserAvatar from "../UserAvatar";
+import Dropdown from "../Global/Dropdown";
+import UserAvatar from "./UserAvatar";
 
 export default function NavBar({ session }: { session: Session | null }) {
   const [scrollY, setScrollY] = useState(0);
@@ -27,7 +25,7 @@ export default function NavBar({ session }: { session: Session | null }) {
   }, []);
   return (
     <NavigationMenu.Root
-      className={`flex justify-between z-20 sticky top-0 h-16 border-b-zinc-800 border-b border-opacity-0 bg-black bg-opacity-0 ${
+      className={`flex justify-between z-20 sticky top-0 h-16 border-b-zinc-800 border-b border-opacity-0 bg-opacity-0 bg-black ${
         scrollY > 0 && "border-opacity-100 bg-opacity-80 backdrop-blur-2xl"
       } items-center px-5 py-3 transition duration-300 `}
     >
@@ -45,7 +43,7 @@ export default function NavBar({ session }: { session: Session | null }) {
               fill="white"
             />
           </svg>
-          <span className="text-zinc-300">/</span>
+          <span className="text-zinc-400">/</span>
           <span className="text-white font-semibold">QuizIt</span>
         </Link>
       </NavigationMenu.Item>

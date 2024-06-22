@@ -5,7 +5,6 @@ import prisma from "./prisma";
 import { signOut, signIn } from "@/auth";
 import { Question } from "@prisma/client";
 import { AnswerType } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 
 export async function handleForm(
   formData: FormData,
@@ -24,41 +23,35 @@ export async function handleForm(
       });
       return response;
     } else {
-      return { error: "Invalid user" };
+      throw new Error("Invalid user");
     }
   } else {
-    return { error: "Invalid data" };
+    throw new Error("Invalid data");
   }
 }
 export async function editCreateQuestion(
   formData: FormData,
+  session: Session,
   question?: Question
 ) {
   const data = formData;
   const questionName = data.get("question")?.toString();
   const answerType = data.get("answerType")?.toString() as AnswerType;
-  if (question) {
-    const updatedQuestion = await prisma.question.update({
-      where: { id: question.id },
-      data: {
-        question: questionName ? questionName.toString() : undefined,
-        answerType: answerType,
-        choices:
-          answerType === AnswerType.MULTIPLE_CHOICE
-            ? data.getAll("mcoption").map((c) => c.toString())
-            : undefined,
-        value: data.get("value")
-          ? parseInt(data.get("value")!.toString())
-          : undefined,
-        answers: JSON.parse(data.get("correctResponses")!.toString()),
-      },
-    });
+  const quizId = data.get("quizId")?.toString();
+  const userId = session.user?.id;
 
-    return updatedQuestion;
-  } else {
-    const quizId = data.get("quizId")?.toString();
-    if (questionName && answerType && quizId) {
-      const createdQuestion = await prisma.question.create({
+  const quiz = await prisma.quiz.findUnique({
+    where: {
+      id: quizId,
+    },
+  });
+
+  if (quiz && quiz.authorId === userId) {
+    if (question) {
+      const updatedQuestion = await prisma.question.update({
+        where: {
+          id: question.id,
+        },
         data: {
           question: questionName,
           answerType: answerType,
@@ -70,37 +63,61 @@ export async function editCreateQuestion(
             ? parseInt(data.get("value")!.toString())
             : undefined,
           answers: JSON.parse(data.get("correctResponses")!.toString()),
-          quizId: quizId,
         },
       });
-      return createdQuestion;
+
+      return updatedQuestion;
     } else {
-      return { error: "Invalid data" };
+      if (questionName && answerType && quizId && userId) {
+        const createdQuestion = await prisma.question.create({
+          data: {
+            question: questionName,
+            answerType: answerType,
+            choices:
+              answerType === AnswerType.MULTIPLE_CHOICE
+                ? data.getAll("mcoption").map((c) => c.toString())
+                : undefined,
+            value: data.get("value")
+              ? parseInt(data.get("value")!.toString())
+              : undefined,
+            answers: JSON.parse(data.get("correctResponses")!.toString()),
+            quizId: quizId,
+          },
+        });
+
+        return createdQuestion;
+      }
     }
+  } else {
+    throw new Error("Unauthorized: User is not the creator of the quiz.");
   }
 }
-export async function deleteQuestion(question: Question, session: Session) {
+export async function deleteQuestion(
+  question: Question,
+  session: Session
+): Promise<Question> {
   if (!session.user?.id) {
-    return { error: "Invalid user" };
+    throw new Error("Invalid user");
   } else {
-    const quiz = await prisma.quiz
-      .findUnique({
-        where: { id: question.quizId },
-      })
-      .then(async (quiz) => {
-        if (quiz?.authorId === session.user?.id) {
-          const deletedQuestion = await prisma.question.delete({
-            where: { id: question.id },
-          });
-          return deletedQuestion;
-        } else {
-          return { error: "Invalid quiz" };
-        }
-      })
-      .catch((e) => {
-        return { error: "Invalid user" };
-      });
-    return quiz; // Add this line to return the deleted question or error
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: question.quizId },
+    });
+
+    if (!quiz) {
+      throw new Error("Quiz not found");
+    }
+
+    if (quiz.authorId !== session.user.id) {
+      throw new Error("Unauthorized: User is not the creator of the quiz.");
+    }
+
+    await prisma.response.deleteMany({
+      where: { questionId: question.id },
+    });
+
+    return await prisma.question.delete({
+      where: { id: question.id },
+    });
   }
 }
 export async function createQuiz(formData: FormData, session: Session) {
@@ -116,10 +133,10 @@ export async function createQuiz(formData: FormData, session: Session) {
       });
       return quiz;
     } else {
-      return { error: "Invalid data" };
+      throw new Error("Invalid data");
     }
   } else {
-    return { error: "Invalid user" };
+    throw new Error("Invalid user");
   }
 }
 export async function getQuiz(id: string) {

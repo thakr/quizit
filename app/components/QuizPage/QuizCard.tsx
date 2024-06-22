@@ -1,15 +1,15 @@
 "use client";
 
-import React, { Suspense, use, useEffect, useRef, useState } from "react";
-import { Response, Status } from "../types";
+import React, { useEffect, useRef, useState } from "react";
+import { Response, Status } from "../../types";
 import { AnswerType } from "@prisma/client";
-import { QuestionsWithoutAnswer } from "../types";
+import { QuestionsWithoutAnswer } from "../../types";
 
-import { SubmitButton } from "./SubmitButton";
+import { SubmitButton } from "../Global/SubmitButton";
 import ShortInput from "./ShortInput";
 import LongInput from "./LongInput";
 import RadioButtons from "./RadioButtons";
-import { handleForm, checkResponseCorrect } from "../lib/actions";
+import { handleForm, checkResponseCorrect } from "../../lib/actions";
 import { Session } from "next-auth";
 
 export default function QuizCard({
@@ -70,7 +70,7 @@ export default function QuizCard({
           : status === true
           ? "border-green-400 bg-green-900"
           : "border-red-400 bg-red-900"
-      } border-[1.5px] w-full rounded-lg p-5 flex flex-col z-10 bg-opacity-20  backdrop-blur-md shadow-lg self-start ${
+      } border-[1.5px] w-full rounded-lg p-5 flex flex-col z-10 bg-opacity-20 backdrop-blur-md shadow-lg self-start ${
         height > 300 && "row-span-2"
       }`}
     >
@@ -84,7 +84,7 @@ export default function QuizCard({
       <form
         action={(formData) =>
           handleForm(formData, question, session).then(async (res) => {
-            if (res && !("error" in res)) {
+            if (res) {
               setResponse(res);
               const newStatus = await checkResponseCorrect(res);
               setStatus(newStatus);

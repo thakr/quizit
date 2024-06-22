@@ -1,5 +1,5 @@
 import React from "react";
-import MyQuizCardSkeleton from "../components/MyQuizCardSkeleton";
+import MyQuizCardSkeleton from "../components/MyQuizzesPage/MyQuizCardSkeleton";
 
 export default function loading() {
   return (

@@ -1,6 +1,5 @@
-import EditQuizPage from "@/app/components/EditQuizPage";
+import EditQuizPage from "@/app/components/EditQuizPage/EditQuizPage";
 import { getQuizWithAnswers } from "@/app/lib/actions";
-import prisma from "@/app/lib/prisma";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import React from "react";

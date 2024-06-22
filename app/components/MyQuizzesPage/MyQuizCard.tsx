@@ -1,11 +1,10 @@
-import { Quiz } from "@prisma/client";
 import React from "react";
-import { QuizWithQuestionsAndResponses } from "../types";
-import PrimaryButton from "./PrimaryButton";
+import { QuizWithQuestionsAndResponses } from "../../types";
+import PrimaryButton from "../Global/PrimaryButton";
 import Link from "next/link";
-import SecondaryButton from "./SecondaryButton";
+import SecondaryButton from "../Global/SecondaryButton";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import Dropdown from "./Dropdown";
+import Dropdown from "../Global/Dropdown";
 
 export default function MyQuizCard({
   quiz,

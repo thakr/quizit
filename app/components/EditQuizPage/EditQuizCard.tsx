@@ -3,14 +3,13 @@
 import { AnswerType, Question, Quiz } from "@prisma/client";
 import React, { useEffect, useState, useRef } from "react";
 
-import { SubmitButton } from "./SubmitButton";
+import { SubmitButton } from "../Global/SubmitButton";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Dropdown from "./Dropdown";
-import DangerButton from "./DangerButton";
-import { deleteQuestion, editCreateQuestion } from "../lib/actions";
-import Alert from "./Alert";
+import Dropdown from "../Global/Dropdown";
+import DangerButton from "../Global/DangerButton";
+import { deleteQuestion, editCreateQuestion } from "../../lib/actions";
+import Alert from "../Global/Alert";
 import { Session } from "next-auth";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 
 export default function EditQuizCard({
@@ -86,8 +85,8 @@ export default function EditQuizCard({
           }
           formData.append("correctResponses", JSON.stringify(responses));
           formData.append("quizId", quiz.id.toString());
-          editCreateQuestion(formData, question).then((res) => {
-            if (res && !("error" in res)) {
+          editCreateQuestion(formData, session, question).then((res) => {
+            if (res) {
               setQuestion(res);
             }
           });
@@ -141,9 +140,7 @@ export default function EditQuizCard({
         </fieldset>
         {answerType === "Multiple choice" && (
           <fieldset className="mb-5">
-            <label htmlFor="mcoption" className="text-white font-semibold">
-              Choices
-            </label>
+            <label className="text-white font-semibold">Choices</label>
             {mcOptions.map((option, index) => (
               <div className="flex flex-row gap-2 items-center" key={index}>
                 <input
@@ -181,10 +178,7 @@ export default function EditQuizCard({
         )}
         <fieldset className="">
           {responses.length > 0 && (
-            <label
-              htmlFor="correctResponse"
-              className="text-white font-semibold"
-            >
+            <label className="text-white font-semibold">
               Correct responses
             </label>
           )}
@@ -252,15 +246,14 @@ export default function EditQuizCard({
                 setDisabled(true);
                 deleteQuestion(question, session).then((res) => {
                   setDisabled(false);
-                  close(res as Question);
+                  close(res);
                 });
               }}
-              trigger={
-                <DangerButton text="Delete question" disabled={disabled} />
-              }
+              trigger={<DangerButton text="Delete" disabled={disabled} />}
+              description="This action is irreversible. The question and all responses associated with it will be permanently removed."
             />
           ) : (
-            <DangerButton text="Delete question" onClick={close} />
+            <DangerButton text="Delete" onClick={close} />
           )}
           {question ? (
             <SubmitButton text="Save changes" disabled={disabled} />

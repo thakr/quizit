@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from "./components/Nav/Nav";
 const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body
         className={`${dm_sans.className} bg-gradient-to-b from-black to-zinc-950 min-h-screen no-scrollbar text-white`}
       >
+        <NextTopLoader showSpinner={false} />
         <Nav />
         {children}
       </body>

@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as Dialog from "@radix-ui/react-dialog";
 import MyQuizCard from "./MyQuizCard";
-import { QuizWithQuestionsAndResponses } from "../types";
-import DialogComponent from "./DialogComponent";
-import PrimaryButton from "./PrimaryButton";
+import { QuizWithQuestionsAndResponses } from "../../types";
+import DialogComponent from "../Global/DialogComponent";
+import PrimaryButton from "../Global/PrimaryButton";
 import { Session } from "next-auth";
-import { createQuiz } from "../lib/actions";
+import { createQuiz } from "../../lib/actions";
 import { redirect } from "next/navigation";
 
 export default function MyQuizzesPage({
@@ -60,7 +60,7 @@ export default function MyQuizzesPage({
             <form
               action={(formData) =>
                 createQuiz(formData, session).then(async (res) => {
-                  if (res && !("error" in res)) {
+                  if (res) {
                     redirect(`/quiz/${res.id}/edit`);
                   }
                 })

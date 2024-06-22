@@ -1,4 +1,4 @@
-import QuizPage from "@/app/components/QuizPage";
+import QuizPage from "@/app/components/QuizPage/QuizPage";
 import { getQuiz, getResponsesForUser } from "@/app/lib/actions";
 
 import React from "react";

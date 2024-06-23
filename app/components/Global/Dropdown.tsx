@@ -29,7 +29,7 @@ export default function Dropdown({
               >
                 {content.map((item, index) => {
                   return (
-                    <>
+                    <div key={index}>
                       {item.link ? (
                         <Link href={`${item.link}`}>
                           <DropdownMenu.Item
@@ -49,7 +49,7 @@ export default function Dropdown({
                           {item.value}
                         </DropdownMenu.Item>
                       )}
-                    </>
+                    </div>
                   );
                 })}
               </motion.div>

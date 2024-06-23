@@ -2,11 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import PrimaryButton from "./components/Global/PrimaryButton";
 import TiltCard from "./components/LandingPage/TiltCard";
+import BentoCard from "./components/LandingPage/BentoCard";
 
 export default function Home() {
   return (
     <div>
-      <div className="w-full h-screen top-0 absolute flex items-center justify-center bg-gradient-to-b from-zinc-700 to-black">
+      <div className="w-full h-screen top-0 absolute flex items-center justify-center bg-gradient-to-b from-black to-zinc-800">
         <div className="m-auto h-full">
           <div className="flex flex-row items-center justify-around w-full h-full">
             <div className="md:w-2/5 px-10">
@@ -27,9 +28,36 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <div className="pb-[100vh]"></div>
-      <div className="w-full h-[calc(100vh-4rem)] flex items-center justify-center bg-black"></div>
+      <div className="h-[calc(100vh-4rem)]"></div>
+      {/* <div className="w-full h-[calc(100vh-4rem)] flex flex-col gap-20 items-center justify-center bg-zinc-800">
+        <h1 className="text-6xl font-bold mx-10 md:w-4/5">
+          Features for both users and creators
+        </h1>
+        <div className="h-4/5 w-4/5 grid grid-cols-3 grid-rows-2 gap-2">
+          <BentoCard
+            title="Create"
+            description="Create quizzes in seconds"
+            image="/images/create.svg"
+            className="col-span-2"
+          ></BentoCard>
+          <BentoCard
+            title="Create"
+            description="Create quizzes in seconds"
+            image="/images/create.svg"
+          ></BentoCard>
+          <BentoCard
+            title="Create"
+            description="Create quizzes in seconds"
+            image="/images/create.svg"
+          ></BentoCard>
+          <BentoCard
+            title="Create"
+            description="Create quizzes in seconds"
+            image="/images/create.svg"
+            className="col-span-2"
+          ></BentoCard>
+        </div>
+      </div> */}
     </div>
   );
 }

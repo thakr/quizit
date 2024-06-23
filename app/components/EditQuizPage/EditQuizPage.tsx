@@ -35,7 +35,6 @@ export default function EditQuizPage({
       setHeight(ref.current.clientHeight);
     }
   }, [ref.current?.clientHeight]);
-  console.log(height);
   return (
     <div className="w-full">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

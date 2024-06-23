@@ -5,6 +5,7 @@ import Nav from "./components/Nav/Nav";
 const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 import NextTopLoader from "nextjs-toploader";
+import Footer from "./components/Footer/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,6 +25,7 @@ export default function RootLayout({
         <NextTopLoader showSpinner={false} />
         <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );

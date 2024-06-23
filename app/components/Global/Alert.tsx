@@ -25,14 +25,22 @@ export default function Alert({
       <AnimatePresence>
         {open && (
           <AlertDialog.Portal forceMount>
-            <AlertDialog.Overlay asChild forceMount />
-            <motion.div
-              initial={{ opacity: "0%" }}
-              animate={{ opacity: "100%" }}
-              exit={{ opacity: "0%" }}
-              className="fixed inset-0 bg-black bg-opacity-50 transition "
-            >
-              <AlertDialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-zinc-950 border-zinc-800 border-[1.5px] rounded-lg shadow-lg p-7 max-w-lg">
+            <AlertDialog.Overlay asChild forceMount>
+              <motion.div
+                className="fixed inset-0 bg-black/50 z-20 backdrop-blur-[10px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              ></motion.div>
+            </AlertDialog.Overlay>
+
+            <AlertDialog.Content>
+              <motion.div
+                className="fixed top-1/2 left-1/2 transform -translate-x-1/2 z-30 -translate-y-1/2 bg-zinc-950 border-zinc-800 border-[1.5px] rounded-lg shadow-lg p-7 min-w-72 max-w-lg"
+                initial={{ opacity: "0%" }}
+                animate={{ opacity: "100%" }}
+                exit={{ opacity: "0%" }}
+              >
                 <AlertDialog.Title className="text-xl font-bold mb-5">
                   {title ? title : "Are you sure?"}
                 </AlertDialog.Title>
@@ -50,8 +58,8 @@ export default function Alert({
                     ></PrimaryButton>
                   </AlertDialog.Action>
                 </div>
-              </AlertDialog.Content>
-            </motion.div>
+              </motion.div>
+            </AlertDialog.Content>
           </AlertDialog.Portal>
         )}
       </AnimatePresence>

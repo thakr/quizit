@@ -32,7 +32,7 @@ export default function DialogComponent({
                 initial={{ opacity: "0%" }}
                 animate={{ opacity: "100%" }}
                 exit={{ opacity: "0%" }}
-                className="fixed top-1/2 left-1/2 transform -translate-x-1/2 z-30 -translate-y-1/2 bg-zinc-950 border-zinc-800 border-[1.5px] rounded-lg shadow-lg p-7 w-[26rem]"
+                className="fixed top-1/2 left-1/2 transform -translate-x-1/2 z-30 -translate-y-1/2 bg-zinc-950 border-zinc-800 border-[1.5px] rounded-lg shadow-lg p-7 w-full sm:w-[26rem]"
               >
                 {children}
               </motion.div>

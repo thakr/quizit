@@ -7,7 +7,7 @@ import BentoCard from "./components/LandingPage/BentoCard";
 export default function Home() {
   return (
     <div>
-      <div className="w-full h-screen top-0 absolute flex items-center justify-center bg-gradient-to-b from-black to-zinc-800">
+      <div className="w-full h-screen top-0 absolute flex items-center justify-center bg-gradient-to-b from-zinc-800 to-black">
         <div className="m-auto h-full">
           <div className="flex flex-row items-center justify-around w-full h-full">
             <div className="md:w-2/5 px-10">

@@ -5,7 +5,21 @@ import React from "react";
 import { auth } from "@/auth";
 import { Session } from "next-auth";
 import { redirect } from "next/navigation";
-// Use the Quiz type as the type of quiz prop
+import { Metadata } from "next";
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
+  const quiz = await getQuiz(params.id);
+  return {
+    title: quiz?.title ? `${quiz.title}` : "Quiz not found",
+  };
+}
 export default async function Page({ params }: { params: { id: string } }) {
   const quiz = await getQuiz(params.id);
   const session = (await auth()) as Session;

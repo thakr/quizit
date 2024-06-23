@@ -50,7 +50,7 @@ const TiltCard = () => {
     <motion.div
       initial={{ opacity: 0, translateX: 100 }}
       animate={{ opacity: 1, translateX: 0 }}
-      transition={{ type: "spring", duration: 0.5 }}
+      transition={{ type: "spring", duration: 0.5, delay: 0.5 }}
     >
       <div className="xl:scale-125 scale-100 hidden md:block">
         <motion.div

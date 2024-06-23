@@ -1,8 +1,10 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import PrimaryButton from "./components/Global/PrimaryButton";
 import TiltCard from "./components/LandingPage/TiltCard";
 import BentoCard from "./components/LandingPage/BentoCard";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
@@ -10,7 +12,12 @@ export default function Home() {
       <div className="w-full h-screen top-0 absolute flex items-center justify-center bg-gradient-to-b from-zinc-800 to-black">
         <div className="m-auto h-full">
           <div className="flex flex-row items-center justify-around w-full h-full">
-            <div className="md:w-2/5 px-10">
+            <motion.div
+              initial={{ opacity: 0, translateX: -100 }}
+              animate={{ opacity: 1, translateX: 0 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="md:w-2/5 px-10"
+            >
               <h1 className="mb-8 text-6xl lg:text-7xl w-full font-bold ">
                 The quiz app for the 21st century
               </h1>
@@ -23,7 +30,7 @@ export default function Home() {
               <Link href="/login">
                 <PrimaryButton text="Get started"></PrimaryButton>
               </Link>
-            </div>
+            </motion.div>
             <TiltCard></TiltCard>
           </div>
         </div>

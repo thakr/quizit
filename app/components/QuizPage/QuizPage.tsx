@@ -38,7 +38,7 @@ export default function QuizPage({
   }, [ref.current?.clientHeight]);
 
   return (
-    <div className="w-full">
+    <div className="w-full min-h-[calc(100vh-9rem)]">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <div
           className={`flex flex-col items-center px-10 py-16 transition duration-300 top-0 ${

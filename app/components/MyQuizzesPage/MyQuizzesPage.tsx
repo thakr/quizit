@@ -10,6 +10,7 @@ import PrimaryButton from "../Global/PrimaryButton";
 import { Session } from "next-auth";
 import { createQuiz } from "../../lib/actions";
 import { redirect } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function MyQuizzesPage({
   quizzes,
@@ -32,18 +33,24 @@ export default function MyQuizzesPage({
   }, []);
 
   return (
-    <div className="w-full">
-      <div
-        className={`flex flex-col items-center px-10 py-16 transition duration-300 top-0 ${
-          scrollY > 0 ? "opacity-20" : "opacity-100"
-        }`}
-      >
-        <div className="flex justify-center fixed h-36 items-center flex-col text-center">
-          <h1 className="text-6xl text-white font-bold p-2.5">My quizzes</h1>
+    <div className="w-full min-h-[calc(100vh-9rem)]">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <div
+          className={`flex flex-col items-center px-10 py-16 transition duration-300 top-0 ${
+            scrollY > 0 ? "opacity-20" : "opacity-100"
+          }`}
+        >
+          <div className="flex justify-center fixed h-36 items-center flex-col text-center">
+            <h1 className="text-6xl text-white font-bold p-2.5">My quizzes</h1>
+          </div>
         </div>
-      </div>
+      </motion.div>
       <div className="pb-10 mt-36 px-5 md:px-10 w-full flex items-center justify-center">
-        <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-10 w-full lg:w-[75%]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="grid md:grid-cols-2 2xl:grid-cols-3 gap-10 w-full lg:w-[75%]"
+        >
           {quizzes.map((quiz) => (
             <MyQuizCard key={quiz.id} quiz={quiz} />
           ))}
@@ -101,7 +108,7 @@ export default function MyQuizzesPage({
               </Dialog.Close>
             </div>
           </DialogComponent>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 export default function Footer() {
   return (
-    <footer className="bg-black h-20 border-t-[1.5px] border-zinc-800 text-white text-center py-4 flex flex-row items-center justify-around">
+    <footer className="bg-black h-20 border-t-[1.5px] border-zinc-800 text-white text-center py-4 flex flex-row flex-auto items-center justify-around">
       <div className="flex flex-row items-center gap-2 text-zinc-300">
         <p>Built by</p>
         <svg

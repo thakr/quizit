@@ -19,7 +19,6 @@ export default function MyQuizCard({
   quiz: QuizWithQuestionsAndResponses;
 }) {
   const [responses, setRespnoses] = useState<
-    | null
     | {
         id: string;
         name: string | null;
@@ -29,7 +28,8 @@ export default function MyQuizCard({
         createdAt: Date;
         updatedAt: Date;
       }[]
-  >(null);
+  >([]);
+
   useEffect(() => {
     getUsersFromQuiz(quiz.id).then((res) => setRespnoses(res));
   }, [quiz.id]);
@@ -64,7 +64,7 @@ export default function MyQuizCard({
                     href={`/view-quiz/${quiz.id}?user=${res.id}`}
                     key={res.id}
                   >
-                    <div className="flex flex-row items-center bg-black justify-between px-5 py-3 rounded-lg border-[1.5px] border-zinc-800 opacity-80 hover:opacity-100 transition cursor-pointer">
+                    <div className="flex flex-row items-center bg-black justify-between px-5 py-3 rounded-lg border-[1.5px] border-zinc-800 opacity-80 hover:opacity-100 hover:border-zinc-700 transition cursor-pointer">
                       <p>{res.name}</p>
                       <ExternalLinkIcon className="h-5 w-5 text-zinc-300 ml-2"></ExternalLinkIcon>
                     </div>

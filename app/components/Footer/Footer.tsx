@@ -1,5 +1,9 @@
 import React from "react";
-import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import {
+  EnvelopeClosedIcon,
+  GitHubLogoIcon,
+  LinkedInLogoIcon,
+} from "@radix-ui/react-icons";
 import Link from "next/link";
 export default function Footer() {
   return (
@@ -22,6 +26,9 @@ export default function Footer() {
         <p>in 2024</p>
       </div>
       <div className="flex flex-row gap-5 text-zinc-300">
+        <Link href="mailto:shaan@thakr.dev">
+          <EnvelopeClosedIcon className="h-6 w-6 hover:text-white transition cursor-pointer" />
+        </Link>
         <Link
           href={"https://github.com/thakr"}
           rel="noopener noreferrer"

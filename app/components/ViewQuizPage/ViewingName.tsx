@@ -9,7 +9,7 @@ export default function ViewingName({ name }: { name: string }) {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
-      <div className="fixed left-[50%] translate-x-[-50%] bg-zinc-800 py-2 px-4 w-full sm:w-[28rem] rounded-full shadow-lg flex flex-row items-center justify-around ">
+      <div className="fixed left-[50%] translate-x-[-50%] bg-zinc-800 py-2 px-4 w-full sm:w-[28rem] rounded-full shadow-lg flex flex-row items-center justify-between ">
         <p>
           You are viewing this quiz as{" "}
           <span className="font-semibold">{name}</span>

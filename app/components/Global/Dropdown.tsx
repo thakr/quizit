@@ -21,9 +21,9 @@ export default function Dropdown({
           <DropdownMenu.Portal forceMount>
             <DropdownMenu.Content sideOffset={5} forceMount asChild>
               <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 100 }}
-                exit={{ scale: 0, opacity: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 100 }}
+                exit={{ opacity: 0 }}
                 transition={{ ease: "easeInOut", duration: 0.1 }}
                 className="w-56 bg-zinc-950 border-zinc-800 border-[1.5px] rounded-lg shadow-lg p-2 mt-2 mr-2 z-50"
               >

@@ -6,7 +6,7 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 
 const ROTATION_RANGE = 32.5;
 const HALF_ROTATION_RANGE = 32.5 / 2;
@@ -79,7 +79,7 @@ const TiltCard = () => {
               </div>
               <div className="group py-2.5 flex justify-between px-4 rounded-lg bg-gradient-to-b from-zinc-500 to-zinc-600 transition">
                 <div className="text-white font-bold">Rome</div>
-                <CheckCircleIcon className="size-6 fill-white " />
+                <CheckCircledIcon className="size-6 fill-white " />
               </div>
               <div className="group py-2.5 flex justify-between px-4 rounded-lg bg-gradient-to-b from-zinc-700 to-zinc-800 transition">
                 <div className="text-white font-bold">Venice</div>

@@ -57,7 +57,11 @@ export default function NavBar({ session }: { session: Session | null }) {
             ]}
           />
         ) : (
-          <div>no user</div>
+          <Link href="/login" className="">
+            <text className="text-zinc-300 font-semibold hover:text-white transition">
+              Log in
+            </text>
+          </Link>
         )}
       </NavigationMenu.Item>
     </NavigationMenu.Root>

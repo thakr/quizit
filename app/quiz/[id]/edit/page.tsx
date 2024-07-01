@@ -7,15 +7,11 @@ import React from "react";
 export const revalidate = 0;
 type Props = {
   params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
-export async function generateMetadata({
-  params,
-  searchParams,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const quiz = await getQuiz(params.id);
   return {
-    title: quiz?.title ? `Edit ${quiz?.title}` : "Quiz not found",
+    title: quiz?.title ? `Edit ${quiz.title}` : "Quiz not found",
   };
 }
 export default async function page({ params }: { params: { id: string } }) {

@@ -5,13 +5,13 @@ import { Session } from "next-auth";
 export default function UserAvatar({ session }: { session: Session }) {
   return (
     <>
-      {session.user ? (
+      {session.user && (
         <Avatar.Root className="bg-zinc-800 inline-flex h-[40px] w-[40px] select-none items-center justify-center overflow-hidden rounded-full align-middle shadow-lg">
-          {/* <Avatar.Image
+          <Avatar.Image
             className="h-full w-full rounded-[inherit] object-cover"
             src={session.user.image as string}
             alt={session.user.name as string}
-          /> */}
+          />
           <Avatar.Fallback
             className="text-white leading-1 flex h-full w-full items-center justify-center text-[15px] font-medium"
             delayMs={600}
@@ -22,8 +22,6 @@ export default function UserAvatar({ session }: { session: Session }) {
               .join("")}
           </Avatar.Fallback>
         </Avatar.Root>
-      ) : (
-        <div>no user</div>
       )}
     </>
   );

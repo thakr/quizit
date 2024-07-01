@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dm_sans.className} bg-gradient-to-b from-black to-zinc-950 min-h-screen no-scrollbar text-white`}
+        className={`${dm_sans.className} bg-gradient-to-b from-black to-zinc-900 min-h-screen no-scrollbar text-white`}
       >
         <NextTopLoader showSpinner={false} />
         <Nav />

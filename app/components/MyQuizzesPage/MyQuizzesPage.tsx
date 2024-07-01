@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, Cross1Icon } from "@radix-ui/react-icons";
+
 import * as Dialog from "@radix-ui/react-dialog";
 import MyQuizCard from "./MyQuizCard";
 import { QuizWithQuestionsAndResponses } from "../../types";
@@ -104,7 +105,7 @@ export default function MyQuizzesPage({
             </form>
             <div className="fixed top-0 right-0 p-4">
               <Dialog.Close className="text-white">
-                <XMarkIcon className="h-6 w-6 text-zinc-300 transition cursor-pointer hover:text-white"></XMarkIcon>
+                <Cross1Icon className="h-5 w-5 text-zinc-300 transition cursor-pointer hover:text-white"></Cross1Icon>
               </Dialog.Close>
             </div>
           </DialogComponent>

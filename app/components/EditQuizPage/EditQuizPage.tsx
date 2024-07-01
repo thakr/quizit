@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { QuizWithQuestionsWithAnswers } from "../../types";
 import { Session } from "next-auth";
 import EditQuizCard from "./EditQuizCard";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@radix-ui/react-icons";
+
 import { motion } from "framer-motion";
 
 export default function EditQuizPage({
@@ -65,7 +66,7 @@ export default function EditQuizPage({
       <div className="sm:mx-10">
         {height !== 0 && (
           <motion.div
-            className="m-5 lg:m-10 gap-10 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 grid justify-center"
+            className="my-10 mx-5 lg:m-10 gap-10 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 grid justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >

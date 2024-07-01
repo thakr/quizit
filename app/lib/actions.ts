@@ -166,6 +166,26 @@ export async function getQuizWithAnswers(id: string) {
   });
   return feed;
 }
+export async function getUser(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+  return user;
+}
+export async function getUsersFromQuiz(quizId: string) {
+  const users = await prisma.user.findMany({
+    where: {
+      responses: {
+        some: {
+          question: {
+            quizId: quizId,
+          },
+        },
+      },
+    },
+  });
+  return users;
+}
 export async function getUserQuizzes(userId: string) {
   const feed = await prisma.quiz.findMany({
     where: { authorId: userId },
@@ -199,7 +219,9 @@ export async function logOut() {
 }
 
 export async function logIn(provider: string, callbackUrl?: string | null) {
-  await signIn(provider, { redirectTo: callbackUrl ? callbackUrl : "/" });
+  await signIn(provider, {
+    redirectTo: callbackUrl ? callbackUrl : "/my-quizzes",
+  });
 }
 
 export async function checkResponseCorrect(response: Response) {

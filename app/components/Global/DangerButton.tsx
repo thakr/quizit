@@ -12,7 +12,7 @@ export default function DangerButton({
   const { pending } = useFormStatus();
   return (
     <button
-      className=" py-2 px-4 rounded-lg text-center text-white font-bold bg-red-900 hover:bg-red-700 transition disabled:bg-zinc-600 disabled:cursor-not-allowed"
+      className=" py-2 px-4 rounded-lg text-center text-white font-bold bg-red-800 hover:bg-red-600 transition disabled:bg-zinc-600 disabled:cursor-not-allowed"
       disabled={disabled || pending}
       onClick={onClick}
       type="button"

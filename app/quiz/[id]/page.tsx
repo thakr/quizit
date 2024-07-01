@@ -11,10 +11,7 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const quiz = await getQuiz(params.id);
   return {
     title: quiz?.title ? `${quiz.title}` : "Quiz not found",

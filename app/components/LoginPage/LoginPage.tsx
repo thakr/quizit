@@ -2,14 +2,19 @@
 import React from "react";
 import { logIn } from "../../lib/actions";
 import { useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
   const params = useSearchParams();
   return (
-    <div className="w-full h-[calc(100vh-4rem)] flex items-center justify-center">
-      <div className="border-zinc-600 border-[1.5px] rounded-lg flex items-center flex-col bg-black bg-opacity-10 backdrop-blur-md shadow-lg">
+    <motion.div
+      className="w-full h-[calc(100vh-4rem)] flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <div className="border-zinc-800 border-[1.5px] rounded-lg p-2 flex items-center flex-col bg-black bg-opacity-10 shadow-lg">
         <h1 className="text-center font-bold text-4xl pt-10 pb-5 px-10">
-          Login to QuizIt
+          Log in to QuizIt
         </h1>
         <div className="pt-5 pb-5 px-10">
           <button
@@ -78,6 +83,6 @@ export default function LoginPage() {
           Currently only Google login is supported.
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }

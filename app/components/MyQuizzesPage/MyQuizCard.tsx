@@ -3,8 +3,11 @@ import { QuizWithQuestionsAndResponses } from "../../types";
 import PrimaryButton from "../Global/PrimaryButton";
 import Link from "next/link";
 import SecondaryButton from "../Global/SecondaryButton";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+
 import Dropdown from "../Global/Dropdown";
+import DialogComponent from "../Global/DialogComponent";
+import * as Dialog from "@radix-ui/react-dialog";
 
 export default function MyQuizCard({
   quiz,
@@ -30,14 +33,16 @@ export default function MyQuizCard({
         <Link href={`/quiz/${quiz.id}/edit`}>
           <SecondaryButton text="Edit quiz" />
         </Link>
-        <Link href={`/`}>
-          <PrimaryButton text="View responses" />
-        </Link>
+        <DialogComponent trigger={<PrimaryButton text="View responses" />}>
+          <Dialog.Title className="text-xl font-bold mb-5">
+            Responses
+          </Dialog.Title>
+        </DialogComponent>
       </div>
-      <div className="fixed top-0 right-0 p-2">
+      <div className="fixed top-0 right-0 items-center flex p-2 ">
         <Dropdown
           trigger={
-            <EllipsisHorizontalIcon className="h-8 w-8 text-zinc-300 transition cursor-pointer hover:text-white" />
+            <DotsHorizontalIcon className="h-6 w-6 text-zinc-300 text-center transition cursor-pointer hover:text-white" />
           }
           content={[
             {

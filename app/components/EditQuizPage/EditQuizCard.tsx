@@ -4,7 +4,7 @@ import { AnswerType, Question, Quiz } from "@prisma/client";
 import React, { useEffect, useState, useRef } from "react";
 
 import { SubmitButton } from "../Global/SubmitButton";
-import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons";
 import Dropdown from "../Global/Dropdown";
 import DangerButton from "../Global/DangerButton";
 import { deleteQuestion, editCreateQuestion } from "../../lib/actions";
@@ -142,10 +142,13 @@ export default function EditQuizCard({
           <fieldset className="mb-5">
             <label className="text-white font-semibold">Choices</label>
             {mcOptions.map((option, index) => (
-              <div className="flex flex-row gap-2 items-center" key={index}>
+              <div
+                className="flex flex-row gap-2 mt-3 items-center "
+                key={index}
+              >
                 <input
                   type="text"
-                  className="bg-transparent rounded-lg mt-3 border-[1.5px] border-zinc-600 px-4 py-2 w-52"
+                  className="bg-transparent rounded-lg border-[1.5px] border-zinc-600 px-4 py-2 w-52"
                   placeholder="Choice"
                   name="mcoption"
                   value={option}
@@ -159,17 +162,17 @@ export default function EditQuizCard({
                   required
                 ></input>
                 {index !== 0 && (
-                  <XMarkIcon
+                  <Cross1Icon
                     className="h-5 w-5 text-zinc-300 hover:text-white transition cursor-pointer"
                     onClick={() =>
                       setMcOptions(mcOptions.filter((_, i) => i !== index))
                     }
-                  ></XMarkIcon>
+                  ></Cross1Icon>
                 )}
               </div>
             ))}
             <div
-              className="font-bold text-blue-400 hover:text-blue-300 transition cursor-pointer mt-3"
+              className="font-bold text-zinc-300 hover:text-white transition cursor-pointer mt-3"
               onClick={() => setMcOptions([...mcOptions, ""])}
             >
               Add option
@@ -219,16 +222,16 @@ export default function EditQuizCard({
                   required
                 ></input>
               )}
-              <XMarkIcon
+              <Cross1Icon
                 className="h-5 w-5 text-zinc-300 hover:text-white transition cursor-pointer"
                 onClick={() =>
                   setResponses(responses.filter((_, i) => i !== index))
                 }
-              ></XMarkIcon>
+              ></Cross1Icon>
             </div>
           ))}
           <div
-            className="font-bold text-blue-400 hover:text-blue-300 transition cursor-pointer mt-3"
+            className="font-bold text-zinc-300 hover:text-white transition cursor-pointer mt-3"
             onClick={() =>
               setResponses([
                 ...responses,

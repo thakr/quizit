@@ -21,7 +21,7 @@ export default function QuizCard({
   question: QuestionsWithoutAnswer;
   cardResponse: Response | undefined;
   cardStatus: boolean | undefined;
-  session: Session;
+  session: Session | undefined;
 }) {
   const [response, setResponse] = useState<Response | undefined>(cardResponse);
   const [status, setStatus] = useState<boolean | undefined>(cardStatus);
@@ -83,6 +83,7 @@ export default function QuizCard({
       </h1>
       <form
         action={(formData) =>
+          session &&
           handleForm(formData, question, session).then(async (res) => {
             if (res) {
               setResponse(res);
@@ -108,7 +109,9 @@ export default function QuizCard({
               </p>
             )}
           </span>
-          <SubmitButton disabled={response != undefined} />
+          <SubmitButton
+            disabled={response != undefined || session === undefined}
+          />
         </div>
       </form>
     </div>

@@ -14,7 +14,7 @@ export default function QuizPage({
   quiz: QuizWithQuestions;
   responses: Response[];
   statuses: { questionId: string; status: boolean | undefined }[];
-  session: Session;
+  session: Session | undefined;
 }) {
   const [scrollY, setScrollY] = useState(0);
   const [height, setHeight] = useState(0);
@@ -70,7 +70,7 @@ export default function QuizPage({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="m-5 lg:m-10 gap-10 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 grid"
+            className="my-10 mx-5 lg:m-10 gap-10 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 grid"
           >
             {quiz.questions.map((question, index: number) => (
               <QuizCard
@@ -82,7 +82,7 @@ export default function QuizPage({
                 cardStatus={
                   statuses.find((s) => s.questionId == question.id)?.status
                 }
-                session={session}
+                session={session ? session : undefined}
               />
             ))}
           </motion.div>

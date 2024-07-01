@@ -4,7 +4,7 @@ import { AnswerType, Question, Quiz } from "@prisma/client";
 import React, { useEffect, useState, useRef } from "react";
 
 import { SubmitButton } from "../Global/SubmitButton";
-import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, Cross1Icon, Cross2Icon } from "@radix-ui/react-icons";
 import Dropdown from "../Global/Dropdown";
 import DangerButton from "../Global/DangerButton";
 import { deleteQuestion, editCreateQuestion } from "../../lib/actions";
@@ -162,12 +162,12 @@ export default function EditQuizCard({
                   required
                 ></input>
                 {index !== 0 && (
-                  <Cross1Icon
+                  <Cross2Icon
                     className="h-5 w-5 text-zinc-300 hover:text-white transition cursor-pointer"
                     onClick={() =>
                       setMcOptions(mcOptions.filter((_, i) => i !== index))
                     }
-                  ></Cross1Icon>
+                  ></Cross2Icon>
                 )}
               </div>
             ))}
@@ -222,12 +222,12 @@ export default function EditQuizCard({
                   required
                 ></input>
               )}
-              <Cross1Icon
+              <Cross2Icon
                 className="h-5 w-5 text-zinc-300 hover:text-white transition cursor-pointer"
                 onClick={() =>
                   setResponses(responses.filter((_, i) => i !== index))
                 }
-              ></Cross1Icon>
+              ></Cross2Icon>
             </div>
           ))}
           <div

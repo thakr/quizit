@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { PlusIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 import * as Dialog from "@radix-ui/react-dialog";
 import MyQuizCard from "./MyQuizCard";
@@ -103,11 +103,6 @@ export default function MyQuizzesPage({
                 <PrimaryButton text="Create quiz" />
               </fieldset>
             </form>
-            <div className="fixed top-0 right-0 p-4">
-              <Dialog.Close className="text-white">
-                <Cross1Icon className="h-5 w-5 text-zinc-300 transition cursor-pointer hover:text-white"></Cross1Icon>
-              </Dialog.Close>
-            </div>
           </DialogComponent>
         </motion.div>
       </div>

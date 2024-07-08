@@ -1,22 +1,31 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { QuizWithQuestionsAndResponses } from "../../types";
 import PrimaryButton from "../Global/PrimaryButton";
 import Link from "next/link";
 import SecondaryButton from "../Global/SecondaryButton";
 import { DotsHorizontalIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
 
-import Dropdown from "../Global/Dropdown";
+import { toast } from "react-toastify";
 import DialogComponent from "../Global/DialogComponent";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as Dialog from "@radix-ui/react-dialog";
-import { getUsersFromQuiz } from "@/app/lib/actions";
+import { deleteQuiz, getUsersFromQuiz, updateQuiz } from "@/app/lib/actions";
+import { AnimatePresence, motion } from "framer-motion";
+import DialogItem from "../Global/DialogItem";
+import * as Switch from "@radix-ui/react-switch";
+import { SubmitButton } from "../Global/SubmitButton";
+import { Session } from "next-auth";
+import AlertItem from "../Global/AlertItem";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
 export default function MyQuizCard({
   quiz,
+  session,
 }: {
   quiz: QuizWithQuestionsAndResponses;
+  session: Session;
 }) {
   const [responses, setRespnoses] = useState<
     | {
@@ -29,10 +38,24 @@ export default function MyQuizCard({
         updatedAt: Date;
       }[]
   >([]);
+  function handleDialogItemSelect() {
+    focusRef.current = dropdownTriggerRef.current;
+  }
 
+  function handleDialogItemOpenChange(open: boolean) {
+    setHasOpenDialog(open);
+    if (open === false) {
+      setDropdownOpen(false);
+    }
+  }
   useEffect(() => {
     getUsersFromQuiz(quiz.id).then((res) => setRespnoses(res));
   }, [quiz.id]);
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [hasOpenDialog, setHasOpenDialog] = React.useState(false);
+  const dropdownTriggerRef = React.useRef(null);
+  const focusRef = React.useRef(null);
   return (
     <div className="p-5 w-full h-40 border-[1.5px] border-zinc-600 rounded-lg bg-black bg-opacity-10 backdrop-blur-md opacity-80 hover:opacity-100 transition">
       <h1 className="text-xl text-white font-bold mb-2">{quiz.title}</h1>
@@ -78,7 +101,7 @@ export default function MyQuizCard({
         </DialogComponent>
       </div>
       <div className="fixed top-0 right-0 items-center flex p-2 ">
-        <Dropdown
+        {/* <Dropdown
           trigger={
             <DotsHorizontalIcon className="h-6 w-6 text-zinc-300 text-center transition cursor-pointer hover:text-white" />
           }
@@ -94,7 +117,145 @@ export default function MyQuizCard({
               value: "Settings",
             },
           ]}
-        />
+        /> */}
+        <DropdownMenu.Root open={dropdownOpen} onOpenChange={setDropdownOpen}>
+          <DropdownMenu.Trigger>
+            <DotsHorizontalIcon
+              ref={dropdownTriggerRef}
+              className="h-6 w-6 text-zinc-300 text-center transition cursor-pointer hover:text-white"
+            />
+          </DropdownMenu.Trigger>
+          <AnimatePresence>
+            {dropdownOpen && (
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content
+                  sideOffset={5}
+                  forceMount
+                  asChild
+                  hidden={hasOpenDialog}
+                >
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 100 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ ease: "easeInOut", duration: 0.1 }}
+                    className="w-56 bg-zinc-950 border-zinc-800 border-[1.5px] rounded-lg shadow-lg p-2 mt-2 mr-2 z-50"
+                  >
+                    <DropdownMenu.Item
+                      className="text-zinc-200 cursor-pointer outline-none py-2 px-4 hover:bg-zinc-700 rounded-lg"
+                      onSelect={() => {
+                        navigator.clipboard.writeText(
+                          `https://quizit.org/quiz/${quiz.id}`
+                        );
+                        toast("Link copied");
+                      }}
+                    >
+                      <p>Copy link</p>
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item className="text-zinc-200 cursor-pointer outline-none py-2 px-4 hover:bg-zinc-700 rounded-lg">
+                      <Link href={`/quiz/${quiz.id}`}>View preview</Link>
+                    </DropdownMenu.Item>
+                    <DialogItem
+                      triggerChildren="Settings"
+                      onSelect={handleDialogItemSelect}
+                      onOpenChange={handleDialogItemOpenChange}
+                    >
+                      <Dialog.Title className="text-xl font-bold mb-5">
+                        Settings
+                      </Dialog.Title>
+                      <form
+                        action={(formData) => {
+                          formData.append("quizId", quiz.id);
+                          updateQuiz(formData, session).then(() => {
+                            toast("Quiz updated");
+                          });
+                        }}
+                      >
+                        <fieldset className="mb-5 flex gap-2 flex-col">
+                          <label
+                            htmlFor="name"
+                            className="text-white font-semibold"
+                          >
+                            Name
+                          </label>
+                          <input
+                            required
+                            name="name"
+                            placeholder="Movie trivia"
+                            defaultValue={quiz.title}
+                            type="text"
+                            className="w-full p-2.5 bg-black bg-opacity-10 rounded-lg border-[1.5px] border-zinc-600 focus:border-white focus:outline-none"
+                          />
+                        </fieldset>
+
+                        <fieldset className="mb-5 flex gap-2 flex-col">
+                          <label
+                            htmlFor="description"
+                            className="text-white font-semibold"
+                          >
+                            Description
+                          </label>
+                          <textarea
+                            name="description"
+                            placeholder="Test your knowledge about movies from the 21st century! (optional)"
+                            defaultValue={quiz.description ?? undefined}
+                            className="w-full p-2.5 bg-black bg-opacity-10 rounded-lg border-[1.5px] border-zinc-600 resize-none h-32 focus:border-white focus:outline-none"
+                          />
+                        </fieldset>
+                        <fieldset className="mb-5 flex gap-2 flex-col">
+                          <label
+                            htmlFor="accepting-responses"
+                            className="text-white font-semibold"
+                          >
+                            Accepting responses
+                          </label>
+                          <Switch.Root
+                            className="w-[50px] h-[25px] bg-zinc-800 rounded-full relative  focus:shadow-black data-[state=checked]:bg-blue-700 outline-none cursor-default"
+                            name="accepting-responses"
+                            defaultChecked={quiz.acceptingAnswers}
+                          >
+                            <Switch.Thumb className="block w-[21px] h-[21px] bg-white rounded-full transition-transform duration-100 translate-x-0.5 will-change-transform data-[state=checked]:translate-x-[27px]" />
+                          </Switch.Root>
+                        </fieldset>
+                        <fieldset className="pt-2 w-full flex justify-end">
+                          <SubmitButton text="Update quiz" />
+                        </fieldset>
+                      </form>
+                    </DialogItem>
+                    <AlertItem
+                      triggerChildren="Delete"
+                      onSelect={handleDialogItemSelect}
+                      onOpenChange={handleDialogItemOpenChange}
+                    >
+                      <AlertDialog.Title className="text-xl font-bold mb-5">
+                        Are you sure?
+                      </AlertDialog.Title>
+                      <AlertDialog.Description className="text-zinc-300 mb-5">
+                        Deleting this quiz will delete all questions and
+                        responses permanently.
+                      </AlertDialog.Description>
+                      <div className="flex flex-row justify-end gap-4 w-full">
+                        <AlertDialog.Cancel asChild>
+                          <SecondaryButton text="Cancel"></SecondaryButton>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                          <PrimaryButton
+                            text="Delete"
+                            onClick={() => {
+                              deleteQuiz(quiz.id, session).then(() => {
+                                toast("Quiz deleted successfully");
+                              });
+                            }}
+                          ></PrimaryButton>
+                        </AlertDialog.Action>
+                      </div>
+                    </AlertItem>
+                  </motion.div>
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            )}
+          </AnimatePresence>
+        </DropdownMenu.Root>
       </div>
     </div>
   );

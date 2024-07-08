@@ -139,6 +139,52 @@ export async function createQuiz(formData: FormData, session: Session) {
     throw new Error("Invalid user");
   }
 }
+export async function updateQuiz(formData: FormData, session: Session) {
+  if (session.user?.id) {
+    const quizId = formData.get("quizId")?.toString();
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: quizId },
+    });
+    if (quiz && quiz.authorId === session.user.id) {
+      const updatedQuiz = await prisma.quiz.update({
+        where: { id: quizId },
+        data: {
+          title: formData.get("name")?.toString(),
+          description: formData.get("description")?.toString(),
+          acceptingAnswers: formData.get("accepting-responses") ? true : false,
+        },
+      });
+      return updatedQuiz;
+    } else {
+      throw new Error("Unauthorized: User is not the creator of the quiz.");
+    }
+  } else {
+    throw new Error("Invalid user");
+  }
+}
+export async function deleteQuiz(quizId: string, session: Session) {
+  if (session.user?.id) {
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: quizId },
+    });
+    if (quiz && quiz.authorId === session.user.id) {
+      await prisma.response.deleteMany({
+        where: { question: { quizId: quizId } },
+      });
+      await prisma.question.deleteMany({
+        where: { quizId: quizId },
+      });
+      await prisma.quiz.delete({
+        where: { id: quizId },
+      });
+      return true;
+    } else {
+      throw new Error("Unauthorized: User is not the creator of the quiz.");
+    }
+  } else {
+    throw new Error("Invalid user");
+  }
+}
 export async function getQuiz(id: string) {
   const feed = await prisma.quiz.findUnique({
     where: { id: id },
@@ -189,6 +235,9 @@ export async function getUsersFromQuiz(quizId: string) {
 export async function getUserQuizzes(userId: string) {
   const feed = await prisma.quiz.findMany({
     where: { authorId: userId },
+    orderBy: {
+      createdAt: "asc",
+    },
     include: {
       questions: {
         include: {

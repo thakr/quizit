@@ -7,11 +7,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import MyQuizCard from "./MyQuizCard";
 import { QuizWithQuestionsAndResponses } from "../../types";
 import DialogComponent from "../Global/DialogComponent";
-import PrimaryButton from "../Global/PrimaryButton";
 import { Session } from "next-auth";
 import { createQuiz } from "../../lib/actions";
 import { redirect } from "next/navigation";
 import { motion } from "framer-motion";
+import { SubmitButton } from "../Global/SubmitButton";
 
 export default function MyQuizzesPage({
   quizzes,
@@ -53,7 +53,7 @@ export default function MyQuizzesPage({
           className="grid md:grid-cols-2 2xl:grid-cols-3 gap-10 w-full lg:w-[75%]"
         >
           {quizzes.map((quiz) => (
-            <MyQuizCard key={quiz.id} quiz={quiz} />
+            <MyQuizCard key={quiz.id} quiz={quiz} session={session} />
           ))}
           <DialogComponent
             trigger={
@@ -100,7 +100,7 @@ export default function MyQuizzesPage({
                 />
               </fieldset>
               <fieldset className="pt-2 w-full flex justify-end">
-                <PrimaryButton text="Create quiz" />
+                <SubmitButton text="Create quiz" />
               </fieldset>
             </form>
           </DialogComponent>

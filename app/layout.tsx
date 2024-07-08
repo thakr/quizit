@@ -6,6 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 import NextTopLoader from "nextjs-toploader";
 import Footer from "./components/Footer/Footer";
+import { Slide, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "QuizIt | The quiz app for the 21st century",
@@ -27,6 +29,19 @@ export default function RootLayout({
         <Nav />
         {children}
         <Footer />
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          bodyClassName={`${dm_sans.className} text-black`}
+          closeButton={false}
+        />
       </body>
     </html>
   );

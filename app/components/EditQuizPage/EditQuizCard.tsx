@@ -11,6 +11,7 @@ import { deleteQuestion, editCreateQuestion } from "../../lib/actions";
 import Alert from "../Global/Alert";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function EditQuizCard({
   defaultQuestion,
@@ -88,6 +89,7 @@ export default function EditQuizCard({
           editCreateQuestion(formData, session, question).then((res) => {
             if (res) {
               setQuestion(res);
+              toast("Question saved");
             }
           });
         }}
@@ -250,6 +252,7 @@ export default function EditQuizCard({
                 deleteQuestion(question, session).then((res) => {
                   setDisabled(false);
                   close(res);
+                  toast("Question deleted");
                 });
               }}
               trigger={<DangerButton text="Delete" disabled={disabled} />}

@@ -15,9 +15,9 @@ export default function ViewingName({ name }: { name: string }) {
           <span className="font-semibold">{name}</span>
         </p>
         <Link href="/my-quizzes">
-          <text className="text-zinc-300 font-semibold hover:text-white transition">
+          <p className="text-zinc-300 font-semibold hover:text-white transition">
             Stop
-          </text>
+          </p>
         </Link>
       </div>
     </motion.div>

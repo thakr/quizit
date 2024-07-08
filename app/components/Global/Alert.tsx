@@ -27,7 +27,7 @@ export default function Alert({
           <AlertDialog.Portal forceMount>
             <AlertDialog.Overlay asChild forceMount>
               <motion.div
-                className="fixed inset-0 bg-black/50 z-20 backdrop-blur-[10px]"
+                className="fixed inset-0 bg-black/50 z-20 "
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
